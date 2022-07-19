@@ -23,4 +23,8 @@
         - Fault, event and performance monitoring and management.
         - Integration with third-party management systems such as vmware, Microsoft, and Openstack
         - Cloud APIC appliance for Cisco cloud ACI deployments in public cloud environments. 
-    5. Needs 3 controllers in a cluster for High Availability
+    5. Needs 3 controllers in a cluster for High Availability.
+   ![ACI Topology](spineleaf.JPG)
+3. **Spine-Leaf Architecture** 
+   1. **Leaf Switch**: Similar to an access switch connects the spine switches to both physical and virtual endpoint servers.==Leaf switches connect to WAN/Core Routers and APIC controllers==
+   2. **Spine Switch**: Similar to distribution switches.==Spine switches can only connect to leaf switches==
