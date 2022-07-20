@@ -48,58 +48,32 @@
             - **VM domains**: Domain groups of vm controllers. APIC communicates with VM controller to push netowrk configurations all the way to the vm level.
             - **Intergration automation framework**: The Layer 4 to 7 service intergration automation framework enables a system to respond to services coming online or going offline.
             - **AAA Policies**: Access, authentication and accounting polices control user privileges, roles and security domains for the ACI fabric.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+4. **Building Blocks of Cisco ACI Fabric Policies**
+   1. **Tenants** are top-level MO's that identify and separate administrative control, application policies and failure domains.
+        - **Network objects** provide Layer 2 and 3 connectivity betwwen endpoints and consist of the follwing constructs:
+          - **VRF(Virtual routing and forwarding)instances**:Isolated routing tables, defines a Layer 3 address domain. Tenants can have one or multiple VRFs.
+          - **Bridge Domains**:Layer 2 forwarding domains defines unique mac address space, flooding domain for broadcast, unkown unicast and multicast frames. ==Each bridge domain can only be associated with one VRF, but a VRF can be associated with multiple bridge domains.==
+          - **Subnets**: Layer 3 networks that provide ip address space and gateway services for endpoints to be able to connect to the network. ==Each subnet is associated with one bridge domain.==
+            - Public - A subnet can be exported to a routed connection.
+            - Private - A subnet is confined within its tenant.
+            - Shared - A subnet can be shared and exposed in multiple VRF instances in the same tenant or accross tenants as part of a shared service.
+          - **External Networks**
+            - Bridged - connect the ACI to legacy layer 2/ spanning tree networks.
+            - Routed - Creates layer 3 connection with a network outside the ACI Fabric. 
+  ![Tenants](ACI_tenant.jpg)
+      - **Policy Objects** are focused on the policies and service the endpoints receive. The tenant policy consists of applicatoin profiles, endpoint groups (EPGs), contracts, and filters.
+        - **Application Profile**: defines the policies, services and relationships etween EPGs. A profile can contain one or more EPGs, as many as are required to service the needs of an application.All EPG's in a profile are logically related to providing the capabilities of the application.
+        - **Endpoint Group(EPG)**:==The most important object of the policy model.== It is a collection of endpoints that have common policy requirements, such as security, virtual machine mobility, QoS, or Layer 4 to 7 services.
+          - IP Address
+          - location
+          - attributes
+          - can be physical or virtual.
+          - Can only be related to a single bridge domain.
+        - **Contracts**: define the services and policies that get applied to EPGs. Used to control traffic flow between EPGs. EPGs communicate based on contract rules.
+          - Specify protocol and ports allowed between EPGs.
+          - inter-EPG communication is disabled by default with no contract.
+          - Consumer or Provider relationship.
+5. **APIC REST API**
 
 
 
