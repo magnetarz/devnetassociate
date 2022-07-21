@@ -1,0 +1,24 @@
+1. This curl command will post user credentials to the APIC controller providing a aaa login Token used as a cookie to authenticate future requests.
+
+curl -k -X POST \
+    https://sandboxapicdc.cisco.com/api/aaaLogin.json \
+    -d '{
+    "aaaUser" : {
+        "attributes" : {
+            "name" : "admin",
+            "pwd" : "!v3G@!4@Y"
+        }
+    }
+    }'
+
+
+2. This curl get request is to get a list of all ACI Fabrics using the class fabricPod
+curl -k -X GET \
+https://sandboxapicdc.cisco.com/api/node/class/fabricPod.json \
+-H 'Cookie: APIC-Cookie=eyJhbGciOiJSUzI1NiIsImtpZCI6Ijc0aTM5MjdtbzN0NTh6cHkxOWRhdmhwYjJvNnYxa3I3IiwidHlwIjoiand0In0.eyJyYmFjIjpbeyJkb21haW4iOiJhbGwiLCJyb2xlc1IiOjAsInJvbGVzVyI6MX1dLCJpc3MiOiJBQ0kgQVBJQyIsInVzZXJuYW1lIjoiYWRtaW4iLCJ1c2VyaWQiOjE1Mzc0LCJ1c2VyZmxhZ3MiOjAsImlhdCI6MTY1ODM2NjcyMiwiZXhwIjoxNjU4MzY3MzIyLCJzZXNzaW9uaWQiOiJ1TUoxLzlRYlF5S3RBaDhpMlN4cFdRPT0ifQ.tCiR81RiUnIu6-pF8RhpuC5eU-K0hlIT4Gc88f5k_unByhSLw3ZuErByjdTmskLSsNc-xNjai8impQq-K2RZVhrIM09A9gBxONmv6yVwEE_ucg-K-Ms1QuV07gkpYkkb0MtW0--m4sdGd6h-_FiHh68W8I1CY7RDUqGirAhCb3-vCXJC1MshhfKSTufFX7mhjusTW6dN_mMlPVvFno8UbBN6cVTCXZZSa4flOAvEaHDYduiklmS3r4no_3Q0TNjS6IG6oOKQqs8h7KDDO_YcxXO1C3L_6eNsXP7Z08v76wxaCuEYlxiwT5UW9o0ZODoFlj3FhMnZSUy6BQnQgnHixw'
+
+3. This Curl command is used to
+
+curl -k -X GET \
+https://sandboxapicdc.cisco.com/api/node/class/topology/pod-1/topSystem.json \
+-H 'Cookie: APIC-Cookie=eyJhbGciOiJSUzI1NiIsImtpZCI6Ijc0aTM5MjdtbzN0NTh6cHkxOWRhdmhwYjJvNnYxa3I3IiwidHlwIjoiand0In0.eyJyYmFjIjpbeyJkb21haW4iOiJhbGwiLCJyb2xlc1IiOjAsInJvbGVzVyI6MX1dLCJpc3MiOiJBQ0kgQVBJQyIsInVzZXJuYW1lIjoiYWRtaW4iLCJ1c2VyaWQiOjE1Mzc0LCJ1c2VyZmxhZ3MiOjAsImlhdCI6MTY1ODM2NzM4MywiZXhwIjoxNjU4MzY3OTgzLCJzZXNzaW9uaWQiOiI3SlpzVW13Z1RkMnpJWWJtdmhKWWlBPT0ifQ.ciY1_STxABssFNF7qw49iKaroVvyvEDaldr_ozhdP-m9QJQJlNlMbNWIjpm77_py8GT92reju9adUP9PD-9_nhYtaGU6Ue0eWi3sjrANE1E44Wr9Hg0cZjBSAuZI_xnK3KmEhhU51Q64WiQJKCewkmw_KoDDlfXBsMsgl0jcbiuy8-_xMRc5T9rNNrNquVqimlvgNSyZXwGeiX13luv7wW-u0nYRxsfrikKlSFfW-o-ewcNozDq4a53zKM3h4hE9A2vmAH110QRt9id_fvkclKW-hwFlMEaBebP-ZKlkJdDM-d3ldlr10MhQ8T733vUpTalq9jmfbIOkzM5N7OTJwg'

@@ -15,7 +15,7 @@
        3. Northbound interface for custom tooling.
     3. **OpenFlex protocol**: South bound interface for communcation with Nexus Switches.
     4. Key features:
-        - Application-centric netowrk policy for physical, virtua, and cloud infrastructure.
+        - Application-centric netowrk policy for physical, virtual, and cloud infrastructure.
         - Data model-based declarative provisioning.
         - designed around open standards and open APIs.
         - Cisco ACI fabric inventory and configuration.
@@ -74,8 +74,92 @@
           - inter-EPG communication is disabled by default with no contract.
           - Consumer or Provider relationship.
 5. **APIC REST API**
+    1. accepts XML or JSON
+    2. The Generic APIC REST API URI:
+            `https://APIC_host:port/api/{mo|class}/{FQDN|classname}/.{xml|json}?[options]`
+    3.  Sample request using curl
+        ```
+       curl -k -X POST
+       https://sandboxapicdc.cisco.com/api/aaaLogin/json
+       -d '{
+        "aaaUser" : {
+            "attributes" : {
+                "name" : "admin",
+                "pwd" : "!v3G@!4@Y"
+            }
+        }
+       }
+    Response:
+    ```json
+    {"totalCount":"1","imdata":[
+        {"aaaLogin":
+        {"attributes":{"token":"eyJhbGciOiJSUzI1NiIsImtpZCI6Ijc0aTM5MjdtbzN0NTh6cHkxOWRhdmhwYjJvNnYxa
+        3I3IiwidHlwIjoiand0In0.eyJyYmFjIjpbeyJkb21haW4iOiJhbGwiLCJyb2xlc1IiOjAsInJvbGVzVyI6MX1dLCJpc3MiOiJBQ
+        0kgQVBJQyIsInVzZXJuYW1lIjoiYWRtaW4iLCJ1c2Vy
+        aWQiOjE1Mzc0LCJ1c2VyZmxhZ3MiOjAsImlhdCI6MTY1ODM2NTQzOCwiZXhwIjoxNjU4MzY
+        MDM4LCJzZXNzaW9uaWQiOiJ1VTd1Tk03Z1QreTFYWWVmTUoyK25RPT0ifQvtFMQgqcDFcqsxihaq-Oh6uQyet9nJt1IoYmHoS1HumdWc1rhrBTACH_
+        CFTITAvoif3mtZiH83DV1fxfjg5UDQigD0gJ7IjU_mOD_eaIxEF1q0R54PrZP35WX-h81ILhQIJi5MHwXiveCgn-IJ
+        Mti4ucQyxPPyhodX3WM-_Kaiw4q0NQkUUerpwC9nfPtKLT6jjywqFdbOiniQW-14fLu0GOk-z0lHRHyrDgtgzqimXe
+        2QXkuq70fojGNp02agBXXIXP1vsjUaiZHLIdJLeD99tiH2OB-w3yx65aqYPVLN15yC85gR7uo1Dv8fcpw8yiriHvTE
+        ARFiDnH_yZaOKUcw",
+        "siteFingerprint":"74i3927mo3t58zpy19davhpb2o6v1kr7","refreshTimeoutSeconds":"600",
+        "maximumLifetimeSeconds":"86400",
+        "guiIdleTimeoutSeconds":"1200",
+        "restTimeoutSeconds":"90",
+        "creationTime":"1658365438",
+        "firstLoginTime":"1658365438",
+        "userName":"admin",
+        "remoteUser":"false",
+        "unixUserId":"15374",
+        "sessionId":"uU7uNM7gT+y1XYefMJ2+nQ==",
+        "lastName":"",
+        "firstName":"",
+        "changePassword":"no",
+        "version":"5.2(1g)",
+        "buildTime":"Wed Jul 28 23:09:38 UTC 2021",
+        "node":"topology/pod-1/node-1"},
+        "children":[{"aaaUserDomain":
+        {"attributes":{"name":"all","rolesR":"admin","rolesW":"admin"},
+        "children":[{"aaaReadRoles":{"attributes":{}}},
+        {"aaaWriteRoles":{"attributes":{},
+        "children":[{"role":
+        {"attributes":
+        {"name":"admin"}}}]}}]}},
+        {"DnDomainMapEntry":
+        {"attributes":{"dn":"uni/tn-infra",
+        "readPrivileges":"admin",
+        "writePrivileges":"admin"}}},
+        {"DnDomainMapEntry":{"attributes":
+        {"dn":"uni/tn-common","readPrivileges":"admin","writePrivileges":"admin"}}},
+        {"DnDomainMapEntry":{"attributes":
+        {"dn":"uni/tn-mgmt","readPrivileges":"admin","writePrivileges":"admin"}}}]}}]}  
+Use the token received in the response as a Cookie header to get a list of all ACI Fabrics
 
+```
+curl -k -X GET \
+https://sandboxapicdc.cisco.com/api/node/class/fabricPod.json \
+-H 'Cookie: APIC-Cookie=eyJhbGciOiJSUzI1NiIsImtpZCI6Ijc0aTM5MjdtbzN0NTh6cHkxOWRhdmhwYjJvNnYxa3I3IiwidHlwIjoiand0In0.eyJyYmFjIjpbeyJkb21haW4iOiJhbGwiLCJyb2xlc1IiOjAsInJvbGVzVyI6MX1dLCJpc3MiOiJBQ0kgQVBJQyIsInVzZXJuYW1lIjoiYWRtaW4iLCJ1c2VyaWQiOjE1Mzc0LCJ1c2VyZmxhZ3MiOjAsImlhdCI6MTY1ODM2NTA3MiwiZXhwIjoxNjU4MzY1NjcyLCJzZXNzaW9uaWQiOiJJQjhpQlZFZlJVS29RdEoya3lHSjFnPT0ifQ.JRyr_ej6V2zV-645fa9FxnJlQHMYC8otL2BwoTheATwK-KFvLq0h2NCbS2ft7A6llu4Z2TM_46KvlaWHKCZhsoo2CIch3w8BdXhgBtpTG9cgKPt6LamwnUyvgsejHpXgd1SLyUAKO5-wwTrLURvB699c_p2eSef1IS22LXFHRN-9VSNoU-Nh3s8jShMszQQrOpCz-Ko3Qf2BU16d7nruefjamb0f2JDyybDJv3wnSukGSJRGxua4DDLQbhNavp_HRKUPTLQT6vwczHXPffo16MUPyoFE-37cZJ1Zijc5LcvWzphLatpe9Inuwp66zwz33djwjWP5dqGIXdWYq86RCg'
+```
+Successful Response:
 
+```json
+{"totalCount":"1",
+"imdata":
+[{"fabricPod":
+{"attributes":
+{"childAction":"","dn":"topology/pod-1",
+"id":"1","lcOwn":"local","modTs":"2022-07-20T02:52:55.999+00:00",
+"monPolDn":"uni/fabric/monfab-default",
+"podType":"physical","status":""}
+}
+}]
+}
+```
+        
+
+    
+    
+   
 
 
 
